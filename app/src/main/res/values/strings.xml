@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Recipeasy</string>
+    <string name="login_btn">Login</string>
+    <string name="register_link">Don\'t have an account? Register Here!</string>
+    <string name="photo_credit">Photo by Viktor Hanacek</string>
+    <string name="register_btn">Register</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="password_confirm">Confirm Password</string>
+    <string name="new_register">New Account</string>
+    <string name="search_recipe">Search Recipe</string>
+    <string name="back">Back</string>
+    <string name="ingredient_name">Ingredient Name</string>
+    <string name="clear_button">Clear</string>
+    <string name="search_button">Search</string>
+    <string name="meal_type">Meal</string>
+    <string name="dessert_type">Dessert</string>
+    <string name="ok_btn">Ok</string>
+    <string name="review">Review</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="duration_min">min</string>
+    <string name="portions_prt">prt</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="add_new_recipe">Add Recipe</string>
+    <string name="delete_recipe">Delete Recipe</string>
+</resources>

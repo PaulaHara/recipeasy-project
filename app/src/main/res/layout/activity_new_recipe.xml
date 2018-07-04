@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/dark_gray">
+
+    <EditText
+        android:id="@+id/edtName"
+        android:layout_width="298dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/imageViewFood"
+        android:layout_marginTop="37dp"
+        android:ems="10"
+        android:hint="@string/recipe_name"
+        android:textColorHint="@color/hint_gray"
+        android:inputType="textPersonName"
+        android:textColor="@color/light_gray"/>
+
+    <EditText
+        android:id="@+id/edtDuration"
+        android:layout_width="76dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView3"
+        android:layout_alignEnd="@+id/imageViewFood"
+        android:ems="10"
+        android:hint="Duration in min"
+        android:textColorHint="@color/hint_gray"
+        android:inputType="textPersonName"
+        android:textColor="@color/light_gray"/>
+
+    <EditText
+        android:id="@+id/edtPortions"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkBox_meal"
+        android:layout_alignStart="@+id/edtName"
+        android:layout_marginBottom="-138dp"
+        android:ems="10"
+        android:hint="Portions"
+        android:textColorHint="@color/hint_gray"
+        android:inputType="textPersonName"
+        android:textColor="@color/light_gray"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/edtIngredients"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="155dp"
+        android:hint="@string/ingredient_name"
+        android:textColorHint="@color/hint_gray"
+        android:textColor="@color/light_gray"/>
+
+    <LinearLayout
+        android:id="@+id/table_scroll"
+        android:layout_width="300dp"
+        android:layout_height="124dp"
+        android:layout_below="@+id/edtIngredients"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="5dip"
+            android:fillViewport="true"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="vertical">
+
+            <TableLayout
+                android:id="@+id/table_of_ingredients"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"></TableLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edtInstructions"
+        android:layout_width="306dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="350dp"
+        android:ems="10"
+        android:hint="Instructions"
+        android:textColorHint="@color/hint_gray"
+        android:inputType="textMultiLine"
+        android:textColor="@color/light_gray"/>
+
+    <ImageView
+        android:id="@+id/imageViewFood"
+        android:layout_width="272dp"
+        android:layout_height="91dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="420dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="510dp"
+        android:text="@string/add_new_recipe"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/edtDuration"
+        android:layout_alignEnd="@+id/edtName"
+        android:text="@string/duration_min"
+        android:textColor="@color/light_gray"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/edtPortions"
+        android:layout_toEndOf="@+id/edtPortions"
+        android:text="@string/portions_prt"
+        android:textColor="@color/light_gray"/>
+
+    <CheckBox
+        android:id="@+id/checkBox_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="118dp"
+        android:text="@string/meal_type"
+        android:textColor="@color/light_gray"/>
+
+    <CheckBox
+        android:id="@+id/checkBox_dessert"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_alignStart="@+id/checkBox_meal"
+        android:layout_alignTop="@+id/edtDuration"
+        android:text="@string/dessert_type"
+        android:textColor="@color/light_gray"/>
+
+</RelativeLayout>

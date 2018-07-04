@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/recipe_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="28dp"
+        android:text="Recipe Name"
+        android:textSize="22dp"
+        android:textColor="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/recipe_img_fl"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.733" />
+
+    <FrameLayout
+        android:id="@+id/recipe_img_fl"
+        android:layout_width="@dimen/recipe_img_width"
+        android:layout_height="@dimen/recipe_img_height"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/recipe_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/vegetables" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="4dp"
+        android:text="40 min"
+        android:textColor="@color/light_gray"
+        app:layout_constraintStart_toEndOf="@+id/duration_icon"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_img_fl" />
+
+    <TextView
+        android:id="@+id/portion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:text="2 portions"
+        android:textColor="@color/light_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/portion_icon"
+        app:layout_constraintTop_toBottomOf="@+id/duration"
+        app:layout_constraintVertical_bias="0.111" />
+
+    <ImageView
+        android:id="@+id/duration_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_img_fl"
+        app:srcCompat="@drawable/time_icon" />
+
+    <ImageView
+        android:id="@+id/portion_icon"
+        android:layout_width="15dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/duration_icon"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_dish" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/review_recipe"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.809"
+        app:layout_constraintStart_toEndOf="@+id/portion"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_img_fl"
+        app:layout_constraintVertical_bias="0.542">
+
+        <ImageView
+            android:id="@+id/star_5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/star_icon" />
+
+        <ImageView
+            android:id="@+id/star_4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/star_5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/star_icon" />
+
+        <ImageView
+            android:id="@+id/star_3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/star_4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/star_icon" />
+
+        <ImageView
+            android:id="@+id/star_2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/star_3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/star_icon" />
+
+        <ImageView
+            android:id="@+id/star_1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/star_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/star_icon" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
