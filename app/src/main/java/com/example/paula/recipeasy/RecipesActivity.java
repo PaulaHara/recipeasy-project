@@ -12,7 +12,11 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.paula.recipeasy.database.RecipeLab;
 import com.example.paula.recipeasy.models.Recipe;
@@ -54,6 +58,35 @@ public class RecipesActivity extends AppCompatActivity {
         pagerTabStrip.setDrawFullUnderline(true);
         pagerTabStrip.setTabIndicatorColor(Color.RED);
         pagerTabStrip.setTextColor(Color.LTGRAY);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_user_area, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem searchItem = menu.findItem(R.id.search_recipe);
+        searchItem.setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.home:
+                Intent home_intent = new Intent(this, RecipePagerActivity.class);
+                startActivity(home_intent);
+                return true;
+            case R.id.search_recipe:
+                Intent intent = new Intent(this, SearchRecipeActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {

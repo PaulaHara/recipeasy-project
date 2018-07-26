@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -88,7 +89,6 @@ public class RecipeListFragment extends Fragment {
             dessert = typeDessert ? "DESSERT" : null;
         }
 
-        Log.i("RecipeListFragment", "passou aqui: onCreate!");
     }
 
     @SuppressLint("ResourceType")
@@ -101,8 +101,6 @@ public class RecipeListFragment extends Fragment {
         mRecipeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
-
-        Log.i("RecipeListFragment", "passou aqui: onCreateView!");
 
         return view;
     }
@@ -125,12 +123,17 @@ public class RecipeListFragment extends Fragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem homeItem = menu.findItem(R.id.home);
+        homeItem.setVisible(false);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.search_recipe:
                 Intent intent = new Intent(getActivity(), SearchRecipeActivity.class);
                 startActivity(intent);
-                Toast.makeText(getActivity(), "Search Recipe", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -146,8 +149,6 @@ public class RecipeListFragment extends Fragment {
         }else{
             recipes = recipeDB.getRecipeByIngredients(meal, dessert);
         }
-
-        Log.i("RecipeListFragment", "UpdateUI: "+typeOfRecipe);
 
         if(mAdapter == null) {
             mAdapter = new RecipeAdapter(recipes);
@@ -220,8 +221,6 @@ public class RecipeListFragment extends Fragment {
         public RecipeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
-            Log.i("RecipeListFragment", "passou aqui: RecipeHolder:onCreateViewHolder!");
-
             return new RecipeHolder(layoutInflater, parent);
         }
 
@@ -229,14 +228,10 @@ public class RecipeListFragment extends Fragment {
         public void onBindViewHolder(@NonNull RecipeHolder holder, int position) {
             Recipe recipe = mRecipes.get(position);
             holder.bind(recipe);
-
-            Log.i("RecipeListFragment", "passou aqui: RecipeHolder:onBindViewHolder!");
-
         }
 
         @Override
         public int getItemCount() {
-            Log.i("RecipeListFragment", "passou aqui: RecipeHolder:getItemCount = " + mRecipes.size());
             return mRecipes.size();
         }
     }

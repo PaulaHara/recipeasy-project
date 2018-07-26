@@ -21,52 +21,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Create Logins table
     private static final String CREATE_LOGINS = "create table "+ LoginTable.NAME +"("
             +"_id integer primary key autoincrement, "
-            +LoginTable.Cols.UUID +", "
-            +LoginTable.Cols.USERNAME + ", "
-            +LoginTable.Cols.PASSWORD + ")";
+            +LoginTable.Cols.UUID +" varchar, "
+            +LoginTable.Cols.USERNAME + " varchar, "
+            +LoginTable.Cols.PASSWORD + " varchar)";
 
     // Create Recipes table
     private static final String CREATE_RECIPES = "create table "+ RecipeTable.NAME +"("
             + "_id integer primary key autoincrement, "
-            + RecipeTable.Cols.UUID + ", "
-            + RecipeTable.Cols.NAME + ", "
+            + RecipeTable.Cols.UUID + " varchar, "
+            + RecipeTable.Cols.NAME + " varchar, "
             + RecipeTable.Cols.DURATION + " integer, "
             + RecipeTable.Cols.PORTIONS + " integer, "
-            + RecipeTable.Cols.INSTRUCTION + ", "
+            + RecipeTable.Cols.INSTRUCTION + " varchar, "
             + RecipeTable.Cols.QTT_INGREDIENTS + " integer, "
-            + RecipeTable.Cols.TYPE + ", "
-            + RecipeTable.Cols.PHOTO + ")";
+            + RecipeTable.Cols.TYPE + " varchar, "
+            + RecipeTable.Cols.PHOTO + " blob)";
 
     // Create Ingredients table
     private static final String CREATE_INGREDIENTS = "create table "+ IngredientTable.NAME +"("
             + "_id integer primary key autoincrement, "
-            + IngredientTable.Cols.UUID + ", "
-            + IngredientTable.Cols.INGREDIENT + ")";
+            + IngredientTable.Cols.UUID + " varchar, "
+            + IngredientTable.Cols.INGREDIENT + " varchar)";
 
     // Create Measure table
     private static final String CREATE_MEASURE = "create table "+ MeasureTable.NAME + "("
             + "_id integer primary key autoincrement, "
-            + MeasureTable.Cols.UUID + ", "
-            + MeasureTable.Cols.MEASURE + ")";
+            + MeasureTable.Cols.UUID + " varchar, "
+            + MeasureTable.Cols.MEASURE + " varchar)";
 
     // Create Recipe_Ingredient table
     private static final String CREATE_RECIPE_INGREDIENT = "create table "+ RecipeIngredientTable.NAME +"("
             + "_id integer primary key autoincrement, "
             + RecipeIngredientTable.Cols.QUANTITY + " integer, "
-            + RecipeIngredientTable.Cols.MEASURE_ID + " string not null REFERENCES "
+            + RecipeIngredientTable.Cols.MEASURE_ID + " varchar not null REFERENCES "
             + MeasureTable.NAME + "(uuid), "
-            + RecipeIngredientTable.Cols.RECIPE_ID + " string not null REFERENCES "
+            + RecipeIngredientTable.Cols.RECIPE_ID + " varchar not null REFERENCES "
             + RecipeTable.NAME + "(uuid), "
-            + RecipeIngredientTable.Cols.INGREDIENT_ID + " string not null REFERENCES "
+            + RecipeIngredientTable.Cols.INGREDIENT_ID + " varchar not null REFERENCES "
             + IngredientTable.NAME + "(uuid))";
 
     // Create Fridge_Ingredient table
     private static final String CREATE_FRIDGE_INGREDIENTS = "create table "+ FridgeIngredientTable.NAME +"("
             + "_id integer primary key autoincrement, "
             + FridgeIngredientTable.Cols.QUANTITY + " integer, "
-            + FridgeIngredientTable.Cols.MEASURE_ID + " string not null REFERENCES "
+            + FridgeIngredientTable.Cols.MEASURE_ID + " varchar not null REFERENCES "
             + MeasureTable.NAME + "(uuid), "
-            + FridgeIngredientTable.Cols.INGREDIENT_ID + " string not null REFERENCES "
+            + FridgeIngredientTable.Cols.INGREDIENT_ID + " varchar not null REFERENCES "
             + IngredientTable.NAME + "(uuid))";
 
     public DatabaseHelper(Context context) {

@@ -4,8 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/home"
+        android:title="@string/home"
+        android:icon="@drawable/ic_home"
+        app:showAsAction="ifRoom|withText"></item>
+
+    <item
         android:id="@+id/search_recipe"
         android:title="@string/search_recipe"
+        android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom|withText"></item>
 
 </menu>

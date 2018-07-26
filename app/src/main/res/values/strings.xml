@@ -24,4 +24,6 @@
     <string name="recipe_name">Recipe Name</string>
     <string name="add_new_recipe">Add Recipe</string>
     <string name="delete_recipe">Delete Recipe</string>
+    <string name="home">Home</string>
+    <string name="share_button">Share</string>
 </resources>

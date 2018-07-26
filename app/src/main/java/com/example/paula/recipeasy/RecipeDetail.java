@@ -6,21 +6,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.paula.recipeasy.database.RecipeIngredientLab;
 import com.example.paula.recipeasy.database.RecipeLab;
@@ -35,6 +32,7 @@ public class RecipeDetail extends AppCompatActivity {
     private static final String EXTRA_RECIPE_ID = "recipe_id";
 
     private Recipe mRecipe;
+    private ShareActionProvider mShareActionProvider;
 
     public static Intent newIntent(Context packageContext, UUID id){
         Intent intent = new Intent(packageContext, RecipeDetail.class);
@@ -99,7 +97,20 @@ public class RecipeDetail extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.fragment_recipe, menu);
-        return super.onCreateOptionsMenu(menu);
+
+        // Share button
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider)MenuItemCompat.getActionProvider(item);
+        //create the sharing intent
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "here goes your share content body";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share Subject");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+
+        //then set the sharingIntent
+        mShareActionProvider.setShareIntent(sharingIntent);
+        return true;
     }
 
     @Override
@@ -108,10 +119,18 @@ public class RecipeDetail extends AppCompatActivity {
             case R.id.remove_recipe:
                 RecipeLab.get(getApplicationContext()).deleteRecipe(mRecipe.getId());
                 RecipeIngredientLab.get(getApplicationContext()).deleteRecipeIngre(mRecipe.getId());
-                Toast.makeText(getApplicationContext(), "Delete Recipe", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Recipe deleted!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(RecipeDetail.this, RecipePagerActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.search_recipe:
+                Intent searchIntent = new Intent(this, SearchRecipeActivity.class);
+                startActivity(searchIntent);
+                return true;
+            case R.id.home:
+                Intent homeIntent = new Intent(this, RecipePagerActivity.class);
+                startActivity(homeIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

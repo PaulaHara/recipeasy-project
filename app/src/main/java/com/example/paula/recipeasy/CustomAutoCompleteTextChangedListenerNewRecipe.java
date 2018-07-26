@@ -29,10 +29,6 @@ public class CustomAutoCompleteTextChangedListenerNewRecipe implements TextWatch
 
     @Override
     public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-
-        // if you want to see in the logcat what the user types
-        Log.e("CustomAutoComplete", "User input: " + userInput);
-
         NewRecipeActivity newRecipeActivity = ((NewRecipeActivity) context);
 
         // query the database based on the user input

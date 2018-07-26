@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.paula.recipeasy.database.FridgeLab;
 import com.example.paula.recipeasy.database.IngredientLab;
@@ -98,9 +102,9 @@ public class SearchRecipeActivity extends AppCompatActivity {
                 });
 
                 Button remove = new Button(getApplicationContext());
-                remove.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.remove_btn));
-                remove.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(40, getResources()),
-                        ImageAndSizeUtils.getWidth(40, getResources())));
+                remove.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_remove));
+                remove.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(30, getResources()),
+                        ImageAndSizeUtils.getWidth(30, getResources())));
                 remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -196,5 +200,31 @@ public class SearchRecipeActivity extends AppCompatActivity {
 
     public void setMyAdapter(ArrayAdapter<String> myAdapter) {
         this.myAdapter = myAdapter;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_user_area, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem searchItem = menu.findItem(R.id.search_recipe);
+        searchItem.setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.home:
+                Intent home_intent = new Intent(this, RecipePagerActivity.class);
+                startActivity(home_intent);
+                Toast.makeText(this, "Back home", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

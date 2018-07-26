@@ -3,6 +3,7 @@ package com.example.paula.recipeasy.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.paula.recipeasy.database.CursorWrapper.MeasureCursorWrapper;
 import com.example.paula.recipeasy.database.CursorWrapper.RecipeCursorWrapper;
@@ -36,10 +37,11 @@ public class RecipeLab extends DatabaseActions {
     private static ContentValues getRecipeValues(Recipe recipe){
         ContentValues values = new ContentValues();
         values.put(RecipeTable.Cols.UUID, recipe.getId().toString());
-        values.put(RecipeTable.Cols.NAME, recipe.getName().toString());
+        values.put(RecipeTable.Cols.NAME, recipe.getName());
         values.put(RecipeTable.Cols.DURATION, recipe.getDuration());
         values.put(RecipeTable.Cols.PORTIONS, recipe.getPortions());
-        values.put(RecipeTable.Cols.INSTRUCTION, recipe.getInstruction().toString());
+        values.put(RecipeTable.Cols.INSTRUCTION, recipe.getInstruction());
+        values.put(RecipeTable.Cols.QTT_INGREDIENTS, recipe.getQttIngredients());
         values.put(RecipeTable.Cols.TYPE, recipe.getType());
         values.put(RecipeTable.Cols.PHOTO, recipe.getPhoto());
 
@@ -134,10 +136,12 @@ public class RecipeLab extends DatabaseActions {
         String query = "SELECT * FROM " + RecipeTable.NAME + " AS recipe "
                 + "WHERE "+searchByType+"recipe.qtt_ingredients = ("
                 + "SELECT count(*) FROM " + RecipeIngredientTable.NAME + " AS recipe_ingr "
-                + "JOIN " + FridgeIngredientTable.NAME + " AS fridge ON "
-                + "fridge.ingredient_id = recipe_ingr.ingredient_id "
-                //+ "AND recipe_ingr.quantity <= frigde.quantity "
+                + "JOIN " + FridgeIngredientTable.NAME + " AS fridge_ingr ON "
+                + "fridge_ingr.ingredient_id = recipe_ingr.ingredient_id "
+                + "AND recipe_ingr.quantity <= fridge_ingr.quantity "
                 + "WHERE recipe.uuid = recipe_ingr.recipe_id)";
+
+        Log.i("RecipeListFragment", "Query: "+query);
 
         cursor = getDatabase().rawQuery(query, null);
 
@@ -249,3 +253,12 @@ public class RecipeLab extends DatabaseActions {
         return recipe;
     }
 }
+
+/**
+ SELECT * FROM recipes AS recipe WHERE recipe.type = 'MEAL' AND recipe.qtt_ingredients = (
+    SELECT count(*) FROM recipe_ingredient AS recipe_ingr
+    JOIN fridge_ingredient AS fridge_ingr
+    ON fridge_ingr.ingredient_id = recipe_ingr.ingredient_id
+    AND recipe_ingr.quantity <= fridge_ingr.quantity
+    WHERE recipe.uuid = recipe_ingr.recipe_id)
+ */

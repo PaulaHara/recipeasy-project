@@ -28,13 +28,13 @@ public class RecipeCursorWrapper extends CursorWrapper {
     }
 
     public Recipe getRecipe(){
-        String uuidString = getString(getColumnIndex(RecipeTable.Cols.UUID));
-        String name = getString(getColumnIndex(RecipeTable.Cols.NAME));
-        float duration = getFloat(getColumnIndex(RecipeTable.Cols.DURATION));
-        float portions = getFloat(getColumnIndex(RecipeTable.Cols.PORTIONS));
-        String instruction = getString(getColumnIndex(RecipeTable.Cols.INSTRUCTION));
-        int qttIngredients = getInt(getColumnIndex(RecipeTable.Cols.QTT_INGREDIENTS));
-        byte[] photo = getBlob(getColumnIndex(RecipeTable.Cols.PHOTO));
+        String uuidString = getString(getColumnIndexOrThrow(RecipeTable.Cols.UUID));
+        String name = getString(getColumnIndexOrThrow(RecipeTable.Cols.NAME));
+        float duration = getFloat(getColumnIndexOrThrow(RecipeTable.Cols.DURATION));
+        float portions = getFloat(getColumnIndexOrThrow(RecipeTable.Cols.PORTIONS));
+        String instruction = getString(getColumnIndexOrThrow(RecipeTable.Cols.INSTRUCTION));
+        int qttIngredients = getInt(getColumnIndexOrThrow(RecipeTable.Cols.QTT_INGREDIENTS));
+        byte[] photo = getBlob(getColumnIndexOrThrow(RecipeTable.Cols.PHOTO));
 
         Recipe recipe = new Recipe(UUID.fromString(uuidString));
         recipe.setName(name);

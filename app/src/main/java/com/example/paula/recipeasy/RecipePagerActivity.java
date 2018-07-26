@@ -11,6 +11,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 
 import com.example.paula.recipeasy.database.RecipeLab;
@@ -50,7 +51,15 @@ public class RecipePagerActivity extends AppCompatActivity {
         PagerTabStrip pagerTabStrip = findViewById(R.id.recipe_page_header);
         pagerTabStrip.setDrawFullUnderline(true);
         pagerTabStrip.setTabIndicatorColor(Color.RED);
-        pagerTabStrip.setTextColor(Color.LTGRAY);
+        pagerTabStrip.setTextColor(Color.DKGRAY);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+
+        return true;
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {

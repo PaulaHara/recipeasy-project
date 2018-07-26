@@ -5,19 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/dark_gray">
+    android:background="@color/light_gray">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/recipe_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/recipe_page_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top">
-
         </android.support.v4.view.PagerTabStrip>
 
     </android.support.v4.view.ViewPager>
@@ -26,14 +28,14 @@
         android:id="@+id/addNewRecipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
-        app:backgroundTint="@android:color/holo_red_dark"
+        app:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.990"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_view_pager"
-        app:layout_constraintVertical_bias="1.40"
         app:srcCompat="@drawable/dish" />
 
 </android.support.constraint.ConstraintLayout>

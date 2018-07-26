@@ -3,6 +3,7 @@ package com.example.paula.recipeasy;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,10 +11,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,6 +58,7 @@ public class NewRecipeActivity extends AppCompatActivity {
     private Button btnCreate;
 
     private List<String> ingredientNames = new ArrayList<>();
+    private int qttIngredientsSelected;
     private ArrayAdapter<String> myAdapter;
 
     @Override
@@ -100,6 +105,7 @@ public class NewRecipeActivity extends AppCompatActivity {
         edtIngredients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                qttIngredientsSelected++;
                 addIngredientToTable();
             }
 
@@ -117,14 +123,14 @@ public class NewRecipeActivity extends AppCompatActivity {
 
                 TextView text = new TextView(getApplicationContext());
                 text.setText(ingredientName);
-                text.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(150, getResources()),
+                text.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(110, getResources()),
                         TableRow.LayoutParams.WRAP_CONTENT));
-                text.setTextColor(Color.LTGRAY);
+                text.setTextColor(Color.GRAY);
 
                 EditText qtt = new EditText(getApplicationContext());
                 qtt.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(50, getResources()),
                         TableRow.LayoutParams.WRAP_CONTENT));
-                qtt.setTextColor(Color.LTGRAY);
+                qtt.setTextColor(Color.GRAY);
 
                 Spinner measure = new Spinner(getApplicationContext());
                 measure.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
@@ -135,7 +141,7 @@ public class NewRecipeActivity extends AppCompatActivity {
                 measure.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.LTGRAY);
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.GRAY);
                     }
 
                     @Override
@@ -143,10 +149,26 @@ public class NewRecipeActivity extends AppCompatActivity {
                     }
                 });
 
+                Button remove = new Button(getApplicationContext());
+                remove.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_remove));
+                remove.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(30, getResources()),
+                        ImageAndSizeUtils.getWidth(30, getResources())));
+                remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        TableRow parent = (TableRow) view.getParent();
+                        mIngredientTable.removeView(parent);
+                        qttIngredientsSelected--;
+                    }
+                });
+
                 row.addView(text);
                 row.addView(qtt);
                 row.addView(measure);
+                row.addView(remove);
                 mIngredientTable.addView(row);
+
+                edtIngredients.setText("");
             }
         });
 
@@ -179,7 +201,7 @@ public class NewRecipeActivity extends AppCompatActivity {
                                 Float.parseFloat(edtDuration.getText().toString().trim()),
                                 Float.parseFloat(edtPortions.getText().toString().trim()),
                                 edtInstructions.getText().toString().trim(),
-                                ingredientNames.size(),
+                                qttIngredientsSelected,
                                 type,
                                 imageViewToByte(imageViewFood));
                         Log.i("RecipeListFragment", "New Recipe:" + recipe);
@@ -221,7 +243,8 @@ public class NewRecipeActivity extends AppCompatActivity {
     }
 
     public static byte[] imageViewToByte(ImageView image) {
-        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        Bitmap bitmap = ImageAndSizeUtils.resize(
+                ((BitmapDrawable)image.getDrawable()).getBitmap(), Resources.getSystem());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
@@ -260,6 +283,30 @@ public class NewRecipeActivity extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_user_area, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.search_recipe:
+                Intent intent = new Intent(this, SearchRecipeActivity.class);
+                startActivity(intent);
+                Toast.makeText(this, "Search Recipe", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.home:
+                Intent home_intent = new Intent(this, RecipePagerActivity.class);
+                startActivity(home_intent);
+                Toast.makeText(this, "Back home", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public List<Measure> getMeasures(){
