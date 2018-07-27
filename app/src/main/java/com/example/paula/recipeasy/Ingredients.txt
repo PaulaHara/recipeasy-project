@@ -1,0 +1,71 @@
+egg
+eggplant
+beef
+chicken
+chocolate
+carrot
+cheese
+avocado
+pepper
+salt
+rice
+beans
+corn
+lettuce
+kale
+flour
+sugar
+condensed milk
+milk
+lime
+apple
+chocolate powder
+cacao
+bacon
+ham
+beans
+quinoa
+beet
+tomato
+potato
+sweet potato
+cucumber
+pork
+baking powder
+baking soda
+vanilla
+peach
+strawberry
+blueberry
+pineapple
+black pepper
+tomato sauce
+onion
+garlic
+banana
+cookie
+coffee
+thick cream
+green onion
+parsley
+cilantro
+lemon grass
+basil
+bread
+bread crumbs
+noodles
+fish
+tuna
+salmon
+sardine
+toast
+wine
+pasta
+fettuccine
+spaghetti
+linguine
+pepperoni
+sausage
+hot dog bun
+hamburger
+hamburger bun

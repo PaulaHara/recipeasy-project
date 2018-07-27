@@ -6,15 +6,12 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +29,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.paula.recipeasy.database.FridgeLab;
 import com.example.paula.recipeasy.database.IngredientLab;
 import com.example.paula.recipeasy.database.MeasureLab;
 import com.example.paula.recipeasy.database.RecipeIngredientLab;
@@ -53,13 +49,15 @@ public class NewRecipeActivity extends AppCompatActivity {
     private ImageView imageViewFood;
     private EditText edtName, edtDuration, edtPortions, edtInstructions;
     private CheckBox edtMeal, edtDessert;
-    private AutoCompleteTextView edtIngredients;
+    private AutoCompleteTextView mIngredientName;
     private TableLayout mIngredientTable;
     private Button btnCreate;
 
     private List<String> ingredientNames = new ArrayList<>();
     private int qttIngredientsSelected;
     private ArrayAdapter<String> myAdapter;
+
+    private IngredientsMethods ingredientsMethods = new IngredientsMethods();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +74,7 @@ public class NewRecipeActivity extends AppCompatActivity {
         edtInstructions = findViewById(R.id.edtInstructions);
         edtMeal = findViewById(R.id.checkBox_meal);
         edtDessert = findViewById(R.id.checkBox_dessert);
-        edtIngredients = findViewById(R.id.edtIngredients);
+        mIngredientName = findViewById(R.id.edtIngredients);
         btnCreate = findViewById(R.id.btnCreate);
         mIngredientTable = findViewById(R.id.table_of_ingredients);
 
@@ -98,11 +96,11 @@ public class NewRecipeActivity extends AppCompatActivity {
             }
         });
 
-        edtIngredients.addTextChangedListener(new CustomAutoCompleteTextChangedListenerNewRecipe(this));
+        mIngredientName.addTextChangedListener(new CustomAutoCompleteTextChangedListenerNewRecipe(this));
         myAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, getIngredientNames());
-        edtIngredients.setAdapter(myAdapter);
+        mIngredientName.setAdapter(myAdapter);
 
-        edtIngredients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mIngredientName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 qttIngredientsSelected++;
@@ -110,65 +108,8 @@ public class NewRecipeActivity extends AppCompatActivity {
             }
 
             private void addIngredientToTable()  {
-                String ingredientName = edtIngredients.getText().toString();
-
-                // return if the input fields are blank
-                if (TextUtils.isEmpty(ingredientName)) {
-                    return;
-                }
-
-                TableRow row = new TableRow(getApplicationContext());
-                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-                        TableLayout.LayoutParams.WRAP_CONTENT));
-
-                TextView text = new TextView(getApplicationContext());
-                text.setText(ingredientName);
-                text.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(110, getResources()),
-                        TableRow.LayoutParams.WRAP_CONTENT));
-                text.setTextColor(Color.GRAY);
-
-                EditText qtt = new EditText(getApplicationContext());
-                qtt.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(50, getResources()),
-                        TableRow.LayoutParams.WRAP_CONTENT));
-                qtt.setTextColor(Color.GRAY);
-
-                Spinner measure = new Spinner(getApplicationContext());
-                measure.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                        TableRow.LayoutParams.WRAP_CONTENT));
-                ArrayAdapter<Measure> measureAdapter = new ArrayAdapter<>(getApplicationContext(),
-                        android.R.layout.simple_spinner_dropdown_item, getMeasures());
-                measure.setAdapter(measureAdapter);
-                measure.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.GRAY);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                    }
-                });
-
-                Button remove = new Button(getApplicationContext());
-                remove.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_remove));
-                remove.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(30, getResources()),
-                        ImageAndSizeUtils.getWidth(30, getResources())));
-                remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TableRow parent = (TableRow) view.getParent();
-                        mIngredientTable.removeView(parent);
-                        qttIngredientsSelected--;
-                    }
-                });
-
-                row.addView(text);
-                row.addView(qtt);
-                row.addView(measure);
-                row.addView(remove);
-                mIngredientTable.addView(row);
-
-                edtIngredients.setText("");
+                ingredientsMethods.addIngredient(mIngredientName, mIngredientTable,
+                        getApplicationContext(), getResources(), NewRecipeActivity.this);
             }
         });
 
@@ -309,11 +250,6 @@ public class NewRecipeActivity extends AppCompatActivity {
         }
     }
 
-    public List<Measure> getMeasures(){
-        MeasureLab measureLab = MeasureLab.get(NewRecipeActivity.this);
-        return measureLab.getMeasures();
-    }
-
     public void searchIngredients(String name){
         IngredientLab ingredientDB = IngredientLab.get(NewRecipeActivity.this);
 
@@ -329,7 +265,7 @@ public class NewRecipeActivity extends AppCompatActivity {
     }
 
     public AutoCompleteTextView getIngredientName() {
-        return edtIngredients;
+        return mIngredientName;
     }
 
     public List<String> getIngredientNames() {
@@ -344,9 +280,20 @@ public class NewRecipeActivity extends AppCompatActivity {
         this.myAdapter = myAdapter;
     }
 
+    private void addMeasures(){
+        if(MeasureLab.get(getApplicationContext()).getMeasures().isEmpty()) {
+            MeasureLab measureLab = MeasureLab.get(NewRecipeActivity.this);
+            measureLab.addMeasure(new Measure("unity"));
+            measureLab.addMeasure(new Measure("gram"));
+            measureLab.addMeasure(new Measure("liter"));
+            measureLab.addMeasure(new Measure("kilo"));
+        }
+    }
+
     private void addIngredients(){
         if(IngredientLab.get(getApplicationContext()).getIngredients().isEmpty()) {
-            IngredientLab ingredientDB = IngredientLab.get(NewRecipeActivity.this);
+            ingredientsMethods.addIngredients(NewRecipeActivity.this);
+            /*IngredientLab ingredientDB = IngredientLab.get(NewRecipeActivity.this);
             ingredientDB.addIngredient(new Ingredient("egg"));
             ingredientDB.addIngredient(new Ingredient("eggplant"));
             ingredientDB.addIngredient(new Ingredient("beef"));
@@ -358,17 +305,7 @@ public class NewRecipeActivity extends AppCompatActivity {
             ingredientDB.addIngredient(new Ingredient("pepper"));
             ingredientDB.addIngredient(new Ingredient("salt"));
             ingredientDB.addIngredient(new Ingredient("rice"));
-            ingredientDB.addIngredient(new Ingredient("beans"));
-        }
-    }
-
-    private void addMeasures(){
-        if(MeasureLab.get(getApplicationContext()).getMeasures().isEmpty()) {
-            MeasureLab measureLab = MeasureLab.get(NewRecipeActivity.this);
-            measureLab.addMeasure(new Measure("unity"));
-            measureLab.addMeasure(new Measure("gram"));
-            measureLab.addMeasure(new Measure("liter"));
-            measureLab.addMeasure(new Measure("kilo"));
+            ingredientDB.addIngredient(new Ingredient("beans"));*/
         }
     }
 }
