@@ -73,21 +73,20 @@ public class SearchRecipeActivity extends AppCompatActivity {
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TableRow row = (TableRow) mIngredientTable.getChildAt(0);
                 int childCount = mIngredientTable.getChildCount();
-                String ingredient, meas;
-                int qtt;
 
                 // Delete everything from the previous fridge
                 FridgeLab.get(getApplicationContext()).deleteFridge();
                 
                 for(int index = 0; index < childCount; index++){
+                    TableRow row = (TableRow) mIngredientTable.getChildAt(index);
+
                     TextView name = (TextView) row.getChildAt(0);
                     EditText quantity = (EditText) row.getChildAt(1);
                     Spinner measure = (Spinner) row.getChildAt(2);
-                    ingredient = name.getText().toString();
-                    qtt = Integer.parseInt(quantity.getText().toString());
-                    meas = measure.getSelectedItem().toString();
+                    String ingredient = name.getText().toString();
+                    int qtt = Integer.parseInt(quantity.getText().toString());
+                    String meas = measure.getSelectedItem().toString();
 
                     UUID ingredientId = IngredientLab.get(getApplicationContext()).getIngredient(ingredient.toLowerCase()).getId();
                     UUID measureId = MeasureLab.get(getApplicationContext()).getMeasureByName(meas).getId();

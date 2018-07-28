@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryDark">@color/light_gray</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/rubik_regular</item>
+        <item name="android:fontFamily">@font/renner</item>
 
         <item name="actionBarStyle">@style/AppTheme.ActionBar.Solid</item>
     </style>

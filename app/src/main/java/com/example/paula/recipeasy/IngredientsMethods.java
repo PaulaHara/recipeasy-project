@@ -24,8 +24,9 @@ import com.example.paula.recipeasy.models.Measure;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class IngredientsMethods {
@@ -90,13 +91,21 @@ public class IngredientsMethods {
         mIngredientName.setText("");
     }
 
-    public void addIngredients(Activity activity){
-        try (BufferedReader br = new BufferedReader(new FileReader("Ingredients.txt"))) {
+    public void addIngredients(Activity activity, InputStream is){
+        try {
             String line;
             IngredientLab ingredientDB = IngredientLab.get(activity);
-            while ((line = br.readLine()) != null) {
-                ingredientDB.addIngredient(new Ingredient(line));
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            int size = Integer.parseInt(br.readLine());
+
+            if(IngredientLab.get(activity).getIngredients().size() != size) {
+                while ((line = br.readLine()) != null) {
+                    ingredientDB.addIngredient(new Ingredient(line));
+                }
             }
+
+            is.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

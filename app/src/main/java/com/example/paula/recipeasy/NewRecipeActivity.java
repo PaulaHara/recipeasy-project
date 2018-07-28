@@ -39,6 +39,7 @@ import com.example.paula.recipeasy.models.Recipe;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,18 +149,16 @@ public class NewRecipeActivity extends AppCompatActivity {
                         Log.i("RecipeListFragment", "New Recipe:" + recipe);
                         RecipeLab.get(getApplicationContext()).addRecipe(recipe);
 
-                        TableRow row = (TableRow) mIngredientTable.getChildAt(0);
                         int childCount = mIngredientTable.getChildCount();
-                        String ingredient, meas;
-                        int qtt;
-
                         for (int index = 0; index < childCount; index++) {
+                            TableRow row = (TableRow) mIngredientTable.getChildAt(index);
+
                             TextView name = (TextView) row.getChildAt(0);
                             EditText quantity = (EditText) row.getChildAt(1);
                             Spinner measure = (Spinner) row.getChildAt(2);
-                            ingredient = name.getText().toString();
-                            qtt = Integer.parseInt(quantity.getText().toString());
-                            meas = measure.getSelectedItem().toString();
+                            String ingredient = name.getText().toString();
+                            int qtt = Integer.parseInt(quantity.getText().toString());
+                            String meas = measure.getSelectedItem().toString();
 
                             UUID ingredientId = IngredientLab.get(getApplicationContext())
                                     .getIngredient(ingredient.toLowerCase()).getId();
@@ -291,21 +290,24 @@ public class NewRecipeActivity extends AppCompatActivity {
     }
 
     private void addIngredients(){
-        if(IngredientLab.get(getApplicationContext()).getIngredients().isEmpty()) {
-            ingredientsMethods.addIngredients(NewRecipeActivity.this);
-            /*IngredientLab ingredientDB = IngredientLab.get(NewRecipeActivity.this);
-            ingredientDB.addIngredient(new Ingredient("egg"));
-            ingredientDB.addIngredient(new Ingredient("eggplant"));
-            ingredientDB.addIngredient(new Ingredient("beef"));
-            ingredientDB.addIngredient(new Ingredient("chicken"));
-            ingredientDB.addIngredient(new Ingredient("chocolate"));
-            ingredientDB.addIngredient(new Ingredient("carrot"));
-            ingredientDB.addIngredient(new Ingredient("cheese"));
-            ingredientDB.addIngredient(new Ingredient("avocado"));
-            ingredientDB.addIngredient(new Ingredient("pepper"));
-            ingredientDB.addIngredient(new Ingredient("salt"));
-            ingredientDB.addIngredient(new Ingredient("rice"));
-            ingredientDB.addIngredient(new Ingredient("beans"));*/
+        try {
+            InputStream is = getAssets().open("ingredients.txt");
+            ingredientsMethods.addIngredients(NewRecipeActivity.this, is);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        /*IngredientLab ingredientDB = IngredientLab.get(NewRecipeActivity.this);
+        ingredientDB.addIngredient(new Ingredient("egg"));
+        ingredientDB.addIngredient(new Ingredient("eggplant"));
+        ingredientDB.addIngredient(new Ingredient("beef"));
+        ingredientDB.addIngredient(new Ingredient("chicken"));
+        ingredientDB.addIngredient(new Ingredient("chocolate"));
+        ingredientDB.addIngredient(new Ingredient("carrot"));
+        ingredientDB.addIngredient(new Ingredient("cheese"));
+        ingredientDB.addIngredient(new Ingredient("avocado"));
+        ingredientDB.addIngredient(new Ingredient("pepper"));
+        ingredientDB.addIngredient(new Ingredient("salt"));
+        ingredientDB.addIngredient(new Ingredient("rice"));
+        ingredientDB.addIngredient(new Ingredient("beans"));*/
     }
 }

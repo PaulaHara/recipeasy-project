@@ -48,8 +48,6 @@ public class RecipesActivity extends AppCompatActivity {
         boolean isMeal = (boolean) getIntent().getSerializableExtra(EXTRA_IS_MEAL);
         boolean isDessert = (boolean) getIntent().getSerializableExtra(EXTRA_IS_DESSERT);
 
-        Log.i("RecipeListFragment", "PagerView:onCreate!");
-
         mViewPager = findViewById(R.id.recipes_view_pager);
         adapterViewPager = new RecipesActivity.MyPagerAdapter(getSupportFragmentManager(), isMeal, isDessert);
         mViewPager.setAdapter(adapterViewPager);
@@ -109,7 +107,6 @@ public class RecipesActivity extends AppCompatActivity {
         // Returns the fragment to display for a particular page.
         @Override
         public Fragment getItem(int position) {
-            Log.i("RecipeListFragment", "RecipeActivity:getItem!");
             switch (position) {
                 case 0:
                     return RecipeListFragment.newInstance(isMeal, isDessert);
@@ -121,9 +118,9 @@ public class RecipesActivity extends AppCompatActivity {
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-            if(isMeal) {
+            if(isMeal && !isDessert) {
                 return "Meals";
-            }else if(isDessert){
+            }else if(isDessert && !isMeal){
                 return "Desserts";
             }
             return "Meals and Desserts";

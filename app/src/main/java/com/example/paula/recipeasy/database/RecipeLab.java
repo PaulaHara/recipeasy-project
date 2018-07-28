@@ -141,8 +141,6 @@ public class RecipeLab extends DatabaseActions {
                 + "AND recipe_ingr.quantity <= fridge_ingr.quantity "
                 + "WHERE recipe.uuid = recipe_ingr.recipe_id)";
 
-        Log.i("RecipeListFragment", "Query: "+query);
-
         cursor = getDatabase().rawQuery(query, null);
 
         try{
