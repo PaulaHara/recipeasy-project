@@ -77,13 +77,13 @@ public class RecipeDetail extends AppCompatActivity {
             text.setText(recipeIngr.get(index).getName());
             text.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(150, getResources()),
                     TableRow.LayoutParams.WRAP_CONTENT));
-            text.setTextColor(Color.LTGRAY);
+            text.setTextColor(Color.DKGRAY);
 
             TextView qtt = new TextView(getApplicationContext());
             qtt.setText(recipeIngr.get(index).getQtt() + " " + recipeIngr.get(index).getMeasure());
             qtt.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(70, getResources()),
                     TableRow.LayoutParams.WRAP_CONTENT));
-            qtt.setTextColor(Color.LTGRAY);
+            qtt.setTextColor(Color.DKGRAY);
 
             row.addView(text);
             row.addView(qtt);

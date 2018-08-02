@@ -11,6 +11,7 @@ import com.example.paula.recipeasy.database.RecipeasyDbSchema.LoginTable;
 import com.example.paula.recipeasy.database.RecipeasyDbSchema.MeasureTable;
 import com.example.paula.recipeasy.database.RecipeasyDbSchema.RecipeIngredientTable;
 import com.example.paula.recipeasy.database.RecipeasyDbSchema.RecipeTable;
+import com.example.paula.recipeasy.database.RecipeasyDbSchema.RecipesUserTable;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -69,6 +70,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + FridgeIngredientTable.Cols.INGREDIENT_ID + " varchar not null REFERENCES "
             + IngredientTable.NAME + "(uuid))";
 
+    // Create Recipes_User table
+    private static final String CREATE_RECIPES_USER = "create table "+ RecipesUserTable.NAME +"("
+            +"_id integer primary key autoincrement, "
+            + RecipesUserTable.Cols.UUID +" varchar, "
+            + RecipesUserTable.Cols.RECIPE_ID + " varchar not null REFERENCES "
+            + RecipeTable.NAME + "(uuid), "
+            + RecipesUserTable.Cols.USER_ID + " varchar not null REFERENCES "
+            + LoginTable.NAME + "(uuid))";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
@@ -81,6 +91,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_MEASURE);
         db.execSQL(CREATE_RECIPE_INGREDIENT);
         db.execSQL(CREATE_FRIDGE_INGREDIENTS);
+        db.execSQL(CREATE_RECIPES_USER);
     }
 
     @Override

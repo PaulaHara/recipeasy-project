@@ -65,4 +65,14 @@ public class RecipeasyDbSchema {
             public static final String QUANTITY = "quantity";
         }
     }
+
+    public static final class RecipesUserTable {
+        public static final String NAME = "recipes_user";
+
+        public static final class Cols{
+            public static final String UUID = "uuid";
+            public static final String RECIPE_ID = "recipe_id";
+            public static final String USER_ID = "user_id";
+        }
+    }
 }

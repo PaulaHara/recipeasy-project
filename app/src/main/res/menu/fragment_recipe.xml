@@ -17,6 +17,12 @@
         app:showAsAction="ifRoom|withText"/>
 
     <item
+        android:id="@+id/save_recipe"
+        android:title="@string/save_recipe"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="ifRoom|withText"></item>
+
+    <item
         android:id="@+id/search_recipe"
         android:title="@string/search_recipe"
         android:icon="@drawable/ic_search"
