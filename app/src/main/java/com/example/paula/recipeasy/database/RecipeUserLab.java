@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.example.paula.recipeasy.database.CursorWrapper.LoginCursorWrapper;
 import com.example.paula.recipeasy.database.CursorWrapper.RecipeCursorWrapper;
 import com.example.paula.recipeasy.database.RecipeasyDbSchema.RecipeIngredientTable;
 import com.example.paula.recipeasy.database.RecipeasyDbSchema.RecipeTable;
@@ -37,6 +38,20 @@ public class RecipeUserLab extends DatabaseActions {
         return values;
     }
 
+    private LoginCursorWrapper query(String whereClause, String[] whereArgs){
+        Cursor cursor = getDatabase().query(
+                RecipesUserTable.NAME,
+                null,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null
+        );
+
+        return new LoginCursorWrapper(cursor);
+    }
+
     public void addRecipe(UUID recipe, UUID user){
         ContentValues values = getRecipeUserValues(recipe, user);
         getDatabase().insert(RecipesUserTable.NAME, null, values);
@@ -49,7 +64,7 @@ public class RecipeUserLab extends DatabaseActions {
     }
 
     private Recipe getRecipe(Cursor cursor){
-        String uuidString = cursor.getString(cursor.getColumnIndex(RecipeTable.Cols.UUID));
+        String uuidString = cursor.getString(cursor.getColumnIndex(RecipesUserTable.Cols.RECIPE_ID));
         String name = cursor.getString(cursor.getColumnIndex(RecipeTable.Cols.NAME));
         float duration = cursor.getFloat(cursor.getColumnIndex(RecipeTable.Cols.DURATION));
         float portions = cursor.getFloat(cursor.getColumnIndex(RecipeTable.Cols.PORTIONS));
@@ -68,14 +83,15 @@ public class RecipeUserLab extends DatabaseActions {
         return recipe;
     }
 
-    public List<Recipe> getRecipes(UUID login){
+    public List<Recipe> getUserRecipes(String type, UUID login){
         List<Recipe> recipes = new ArrayList<>();
         Cursor cursor;
 
         String query = "SELECT * FROM " + RecipeTable.NAME + " AS recipe "
                 + "JOIN " + RecipesUserTable.NAME + " AS recipe_user "
                 + "ON recipe_user.recipe_id = recipe.uuid "
-                + "WHERE recipe_user.user_id = '"+login+"'";
+                + "WHERE recipe_user.user_id = '"+login+"' "
+                + "AND recipe.type = '"+type+"'";
 
         cursor = getDatabase().rawQuery(query, null);
 
@@ -90,5 +106,24 @@ public class RecipeUserLab extends DatabaseActions {
         }
 
         return recipes;
+    }
+
+    public boolean getUserRecipe(UUID recipeId, UUID loginId){
+        LoginCursorWrapper cursor = query(
+                RecipesUserTable.Cols.RECIPE_ID + " = ? and "
+                        + RecipesUserTable.Cols.USER_ID + " = ?",
+                new String[] {recipeId.toString(), loginId.toString()}
+        );
+
+        try{
+            if(cursor.getCount() == 0){
+                return false;
+            }
+
+            cursor.moveToFirst();
+            return true;
+        } finally {
+            cursor.close();
+        }
     }
 }

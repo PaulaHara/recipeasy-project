@@ -171,7 +171,7 @@ public class SearchRecipeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.home:
-                Intent home_intent = new Intent(this, RecipePagerActivity.class);
+                Intent home_intent = RecipePagerActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(home_intent);
                 Toast.makeText(this, "Back home", Toast.LENGTH_SHORT).show();
                 return true;

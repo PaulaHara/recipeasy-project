@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.paula.recipeasy.database.RecipeLab;
+import com.example.paula.recipeasy.database.RecipeUserLab;
 import com.example.paula.recipeasy.models.Recipe;
 
 import java.io.Serializable;
@@ -146,13 +147,12 @@ public class RecipeListFragment extends Fragment {
     }
 
     public void updateUI(){
-        RecipeLab recipeDB = RecipeLab.get(getActivity());
         List<Recipe> recipes;
 
         if(typeOfRecipe != null) {
-            recipes = recipeDB.getRecipeByType(typeOfRecipe);
+            recipes = RecipeUserLab.get(getActivity()).getUserRecipes(typeOfRecipe, loginId);
         }else{
-            recipes = recipeDB.getRecipeByIngredients(meal, dessert);
+            recipes = RecipeLab.get(getActivity()).getRecipeByIngredients(meal, dessert);
         }
 
         if(mAdapter == null) {
@@ -196,14 +196,17 @@ public class RecipeListFragment extends Fragment {
             mLoginId = loginId;
 
             mRecipe = recipe;
-            mTitleTextView.setText(mRecipe.getName());
-            mDuration.setText(String.valueOf(mRecipe.getDuration()));
-            mPortion.setText(String.valueOf(mRecipe.getPortions()));
 
-            byte[] foodImg = mRecipe.getPhoto();
+            if(mRecipe != null) {
+                mTitleTextView.setText(mRecipe.getName());
+                mDuration.setText(String.valueOf(mRecipe.getDuration()));
+                mPortion.setText(String.valueOf(mRecipe.getPortions()));
 
-            Bitmap bitmap = BitmapFactory.decodeByteArray(foodImg, 0, foodImg.length);
-            mRecipeImg.setImageBitmap(ImageAndSizeUtils.resize(bitmap, getResources()));
+                byte[] foodImg = mRecipe.getPhoto();
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(foodImg, 0, foodImg.length);
+                mRecipeImg.setImageBitmap(ImageAndSizeUtils.resize(bitmap, getResources()));
+            }
         }
 
         @Override

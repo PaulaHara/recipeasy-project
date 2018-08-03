@@ -1,6 +1,7 @@
 package com.example.paula.recipeasy;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -47,6 +48,8 @@ import java.util.UUID;
 
 public class NewRecipeActivity extends AppCompatActivity {
 
+    private static final String EXTRA_LOGIN_ID = "login_id";
+
     private ImageView imageViewFood;
     private EditText edtName, edtDuration, edtPortions, edtInstructions;
     private CheckBox edtMeal, edtDessert;
@@ -57,13 +60,22 @@ public class NewRecipeActivity extends AppCompatActivity {
     private List<String> ingredientNames = new ArrayList<>();
     private int qttIngredientsSelected;
     private ArrayAdapter<String> myAdapter;
+    private UUID loginId;
 
     private IngredientsMethods ingredientsMethods = new IngredientsMethods();
+
+    public static Intent newIntent(Context packageContext, UUID id){
+        Intent intent = new Intent(packageContext, NewRecipeActivity.class);
+        intent.putExtra(EXTRA_LOGIN_ID, id);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_recipe);
+
+        loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
 
         addIngredients();
         addMeasures();
@@ -169,7 +181,7 @@ public class NewRecipeActivity extends AppCompatActivity {
                         }
 
                         Toast.makeText(getApplicationContext(), "Recipe added successfully!!!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(NewRecipeActivity.this, RecipePagerActivity.class);
+                        Intent intent = RecipePagerActivity.newIntent(getApplicationContext(), loginId);
                         startActivity(intent);
                     }else{
                         Toast.makeText(getApplicationContext(), "Error: Recipe must have a type!", Toast.LENGTH_SHORT).show();
@@ -235,12 +247,12 @@ public class NewRecipeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.search_recipe:
-                Intent intent = new Intent(this, SearchRecipeActivity.class);
+                Intent intent = SearchRecipeActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(intent);
                 Toast.makeText(this, "Search Recipe", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.home:
-                Intent home_intent = new Intent(this, RecipePagerActivity.class);
+                Intent home_intent = RecipePagerActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(home_intent);
                 Toast.makeText(this, "Back home", Toast.LENGTH_SHORT).show();
                 return true;

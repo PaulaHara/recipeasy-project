@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="@string/ingredient_name"
-        android:textColor="@color/light_gray"
+        android:textColor="@color/darker_gray"
         android:textColorHint="@color/hint_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

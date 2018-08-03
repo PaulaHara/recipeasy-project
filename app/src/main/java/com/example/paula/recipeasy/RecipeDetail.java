@@ -37,6 +37,7 @@ public class RecipeDetail extends AppCompatActivity {
 
     private Recipe mRecipe;
     private Login mLogin;
+    private UUID loginId;
     private ShareActionProvider mShareActionProvider;
 
     public static Intent newIntent(Context packageContext, UUID recipeId, UUID loginId){
@@ -52,7 +53,7 @@ public class RecipeDetail extends AppCompatActivity {
         setContentView(R.layout.fragment_recipe);
 
         UUID recipeId = (UUID) getIntent().getSerializableExtra(EXTRA_RECIPE_ID);
-        UUID loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
+        loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
 
         if(recipeId != null) {
             mRecipe = RecipeLab.get(getApplicationContext()).getRecipe(recipeId);
@@ -126,29 +127,45 @@ public class RecipeDetail extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean hasRecipe = RecipeUserLab.get(getApplicationContext()).getUserRecipe(mRecipe.getId(), mLogin.getId());
+
+        MenuItem menuItem;
+        if(hasRecipe) {
+            menuItem = menu.findItem(R.id.save_recipe);
+            menuItem.setVisible(false);
+        }else{
+            menuItem = menu.findItem(R.id.remove_recipe);
+            menuItem.setVisible(false);
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.delete_recipe:
                 RecipeLab.get(getApplicationContext()).deleteRecipe(mRecipe.getId());
                 RecipeIngredientLab.get(getApplicationContext()).deleteRecipeIngre(mRecipe.getId());
                 Toast.makeText(getApplicationContext(), "Recipe deleted!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RecipeDetail.this, RecipePagerActivity.class);
+                Intent intent = RecipePagerActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(intent);
                 return true;
             case R.id.search_recipe:
-                Intent searchIntent = new Intent(this, SearchRecipeActivity.class);
+                Intent searchIntent = SearchRecipeActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(searchIntent);
                 return true;
             case R.id.save_recipe:
                 RecipeUserLab.get(getApplicationContext()).addRecipe(mRecipe.getId(), mLogin.getId());
                 Toast.makeText(getApplicationContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
                 return true;
-            /*case R.id.remove_recipe:
+            case R.id.remove_recipe:
                 RecipeUserLab.get(getApplicationContext()).removeRecipe(mRecipe.getId(), mLogin.getId());
                 Toast.makeText(getApplicationContext(), "Recipe removed!", Toast.LENGTH_SHORT).show();
-                return true;*/
+                return true;
             case R.id.home:
-                Intent homeIntent = new Intent(this, RecipePagerActivity.class);
+                Intent homeIntent = RecipePagerActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(homeIntent);
                 return true;
             default:

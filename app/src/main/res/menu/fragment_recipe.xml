@@ -23,6 +23,12 @@
         app:showAsAction="ifRoom|withText"></item>
 
     <item
+        android:id="@+id/remove_recipe"
+        android:title="@string/remove_recipe"
+        android:icon="@drawable/ic_remove"
+        app:showAsAction="ifRoom|withText"></item>
+
+    <item
         android:id="@+id/search_recipe"
         android:title="@string/search_recipe"
         android:icon="@drawable/ic_search"

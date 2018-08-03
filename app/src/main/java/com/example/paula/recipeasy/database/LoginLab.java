@@ -36,7 +36,7 @@ public class LoginLab extends DatabaseActions {
         return values;
     }
 
-    private LoginCursorWrapper queryCrimes(String whereClause, String[] whereArgs){
+    private LoginCursorWrapper query(String whereClause, String[] whereArgs){
         Cursor cursor = getDatabase().query(
                 LoginTable.NAME,
                 null,
@@ -72,7 +72,7 @@ public class LoginLab extends DatabaseActions {
     }
 
     public Login getLogin(String username, String password){
-        LoginCursorWrapper cursor = queryCrimes(
+        LoginCursorWrapper cursor = query(
                 LoginTable.Cols.USERNAME + " = ? and "
                         + LoginTable.Cols.PASSWORD + " = ?",
                 new String[] {username, password}
@@ -91,7 +91,7 @@ public class LoginLab extends DatabaseActions {
     }
 
     public Login getLogin(UUID id){
-        LoginCursorWrapper cursor = queryCrimes(
+        LoginCursorWrapper cursor = query(
                 LoginTable.Cols.UUID + " = ?",
                 new String[] {id.toString()}
         );
@@ -111,7 +111,7 @@ public class LoginLab extends DatabaseActions {
     public List<Login> getLogins(){
         List<Login> logins = new ArrayList<>();
 
-        LoginCursorWrapper cursor = queryCrimes(null, null);
+        LoginCursorWrapper cursor = query(null, null);
 
         try{
             cursor.moveToFirst();

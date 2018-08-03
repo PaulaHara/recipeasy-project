@@ -40,18 +40,19 @@ public class IngredientsMethods {
         }
 
         TableRow row = new TableRow(context);
-        row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT));
 
         TextView text = new TextView(context);
         text.setText(ingredientName);
         text.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(110, resources),
                 TableRow.LayoutParams.WRAP_CONTENT));
-        text.setTextColor(Color.LTGRAY);
+        text.setTextColor(Color.DKGRAY);
 
         EditText qtt = new EditText(context);
         qtt.setLayoutParams(new TableRow.LayoutParams(ImageAndSizeUtils.getWidth(50, resources),
                 TableRow.LayoutParams.WRAP_CONTENT));
-        qtt.setTextColor(Color.LTGRAY);
+        qtt.setTextColor(Color.DKGRAY);
 
         Spinner measure = new Spinner(context);
         measure.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
@@ -62,7 +63,7 @@ public class IngredientsMethods {
         measure.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.LTGRAY);
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.DKGRAY);
             }
 
             @Override

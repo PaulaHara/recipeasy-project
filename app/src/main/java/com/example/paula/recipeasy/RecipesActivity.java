@@ -33,6 +33,7 @@ public class RecipesActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private FragmentPagerAdapter adapterViewPager;
+    private UUID loginId;
 
     public static Intent newIntent(Context packageContext, boolean isMeal, boolean isDessert, UUID loginId){
         Intent intent = new Intent(packageContext, RecipesActivity.class);
@@ -50,7 +51,7 @@ public class RecipesActivity extends AppCompatActivity {
         boolean isMeal = (boolean) getIntent().getSerializableExtra(EXTRA_IS_MEAL);
         boolean isDessert = (boolean) getIntent().getSerializableExtra(EXTRA_IS_DESSERT);
 
-        UUID loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
+        loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
 
         mViewPager = findViewById(R.id.recipes_view_pager);
         adapterViewPager = new RecipesActivity.MyPagerAdapter(getSupportFragmentManager(), isMeal, isDessert, loginId);
@@ -79,11 +80,11 @@ public class RecipesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.home:
-                Intent home_intent = new Intent(this, RecipePagerActivity.class);
+                Intent home_intent = RecipePagerActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(home_intent);
                 return true;
             case R.id.search_recipe:
-                Intent intent = new Intent(this, SearchRecipeActivity.class);
+                Intent intent = SearchRecipeActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(intent);
                 return true;
             default:

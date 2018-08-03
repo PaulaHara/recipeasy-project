@@ -45,7 +45,7 @@ public class RecipePagerActivity extends AppCompatActivity {
 
         loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
 
-        mRecipes = RecipeUserLab.get(this).getRecipes(loginId);
+        mRecipes = RecipeUserLab.get(this).getUserRecipes("MEAL", loginId);
         //mRecipes = RecipeLab.get(this).getRecipes();
 
         mViewPager = findViewById(R.id.recipe_view_pager);
@@ -56,7 +56,7 @@ public class RecipePagerActivity extends AppCompatActivity {
         mNewRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RecipePagerActivity.this, NewRecipeActivity.class);
+                Intent intent = NewRecipeActivity.newIntent(getApplicationContext(), loginId);
                 startActivity(intent);
             }
         });
