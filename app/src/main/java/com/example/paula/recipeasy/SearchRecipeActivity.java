@@ -1,5 +1,6 @@
 package com.example.paula.recipeasy;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,8 @@ import java.util.UUID;
 
 public class SearchRecipeActivity extends AppCompatActivity {
 
+    private static final String EXTRA_LOGIN_ID = "login_id";
+
     private AutoCompleteTextView mIngredientName;
     private CheckBox mMealType;
     private CheckBox mDessertType;
@@ -37,15 +40,25 @@ public class SearchRecipeActivity extends AppCompatActivity {
     private Button mSearchBtn;
     private Button mCleanBtn;
 
+    private UUID loginId;
+
     private List<String> ingredientNames = new ArrayList<>();
     private ArrayAdapter<String> myAdapter;
 
     private IngredientsMethods ingredientsMethods = new IngredientsMethods();
 
+    public static Intent newIntent(Context packageContext, UUID id){
+        Intent intent = new Intent(packageContext, SearchRecipeActivity.class);
+        intent.putExtra(EXTRA_LOGIN_ID, id);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_recipe);
+
+        loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
 
         mIngredientTable = findViewById(R.id.table_of_ingredients);
         mIngredientName = findViewById(R.id.autoIngredientName);
@@ -94,7 +107,7 @@ public class SearchRecipeActivity extends AppCompatActivity {
                 }
 
                 Intent intent = RecipesActivity.newIntent(getApplicationContext(),
-                        mMealType.isChecked(), mDessertType.isChecked());
+                        mMealType.isChecked(), mDessertType.isChecked(), loginId);
                 startActivity(intent);
             }
         });

@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, RecipePagerActivity.class);
+                    Intent intent = RecipePagerActivity.newIntent(getApplicationContext(), login.getId());
                     startActivity(intent);
                 }
             }

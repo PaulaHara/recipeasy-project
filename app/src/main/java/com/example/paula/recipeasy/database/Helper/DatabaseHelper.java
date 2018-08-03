@@ -98,6 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + RecipeIngredientTable.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FridgeIngredientTable.NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + RecipesUserTable.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + LoginTable.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + RecipeTable.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + IngredientTable.NAME);

@@ -29,14 +29,16 @@ public class RecipesActivity extends AppCompatActivity {
 
     private final static String EXTRA_IS_MEAL = "is_meal";
     private final static String EXTRA_IS_DESSERT = "is_dessert";
+    private final static String EXTRA_LOGIN_ID = "login_id";
 
     private ViewPager mViewPager;
     private FragmentPagerAdapter adapterViewPager;
 
-    public static Intent newIntent(Context packageContext, boolean isMeal, boolean isDessert){
+    public static Intent newIntent(Context packageContext, boolean isMeal, boolean isDessert, UUID loginId){
         Intent intent = new Intent(packageContext, RecipesActivity.class);
         intent.putExtra(EXTRA_IS_MEAL, isMeal);
         intent.putExtra(EXTRA_IS_DESSERT, isDessert);
+        intent.putExtra(EXTRA_LOGIN_ID, loginId);
         return intent;
     }
 
@@ -48,8 +50,10 @@ public class RecipesActivity extends AppCompatActivity {
         boolean isMeal = (boolean) getIntent().getSerializableExtra(EXTRA_IS_MEAL);
         boolean isDessert = (boolean) getIntent().getSerializableExtra(EXTRA_IS_DESSERT);
 
+        UUID loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
+
         mViewPager = findViewById(R.id.recipes_view_pager);
-        adapterViewPager = new RecipesActivity.MyPagerAdapter(getSupportFragmentManager(), isMeal, isDessert);
+        adapterViewPager = new RecipesActivity.MyPagerAdapter(getSupportFragmentManager(), isMeal, isDessert, loginId);
         mViewPager.setAdapter(adapterViewPager);
 
         PagerTabStrip pagerTabStrip = findViewById(R.id.recipes_page_header);
@@ -91,11 +95,13 @@ public class RecipesActivity extends AppCompatActivity {
         private static int NUM_ITEMS = 1;
         private boolean isMeal;
         private boolean isDessert;
+        private UUID loginId;
 
-        public MyPagerAdapter(FragmentManager fragmentManager, boolean isMeal, boolean isDessert) {
+        public MyPagerAdapter(FragmentManager fragmentManager, boolean isMeal, boolean isDessert, UUID loginId) {
             super(fragmentManager);
             this.isMeal = isMeal;
             this.isDessert = isDessert;
+            this.loginId = loginId;
         }
 
         // Returns total number of pages.
@@ -109,7 +115,7 @@ public class RecipesActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return RecipeListFragment.newInstance(isMeal, isDessert);
+                    return RecipeListFragment.newInstance(isMeal, isDessert, loginId);
                 default:
                     return null;
             }

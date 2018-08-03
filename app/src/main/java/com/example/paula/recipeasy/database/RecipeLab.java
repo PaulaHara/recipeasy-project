@@ -251,12 +251,3 @@ public class RecipeLab extends DatabaseActions {
         return recipe;
     }
 }
-
-/**
- SELECT * FROM recipes AS recipe WHERE recipe.type = 'MEAL' AND recipe.qtt_ingredients = (
-    SELECT count(*) FROM recipe_ingredient AS recipe_ingr
-    JOIN fridge_ingredient AS fridge_ingr
-    ON fridge_ingr.ingredient_id = recipe_ingr.ingredient_id
-    AND recipe_ingr.quantity <= fridge_ingr.quantity
-    WHERE recipe.uuid = recipe_ingr.recipe_id)
- */

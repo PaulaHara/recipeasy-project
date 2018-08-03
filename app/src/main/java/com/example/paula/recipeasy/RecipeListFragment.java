@@ -1,19 +1,15 @@
 package com.example.paula.recipeasy;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,17 +18,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.paula.recipeasy.database.RecipeLab;
 import com.example.paula.recipeasy.models.Recipe;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 public class RecipeListFragment extends Fragment {
 
     private static final String ARG_TYPE_OF_FOOD = "type_of_food";
+    private static final String ARG_LOGIN_ID = "login_id";
 
     private static final String ARG_MEAL = "meal";
     private static final String ARG_DESSERT = "dessert";
@@ -41,10 +38,12 @@ public class RecipeListFragment extends Fragment {
     private RecipeAdapter mAdapter;
     private String typeOfRecipe;
     private String meal, dessert;
+    private UUID loginId;
 
-    public static Fragment newInstance(boolean isMeal) {
+    public static Fragment newInstance(boolean isMeal, UUID loginId) {
         Bundle args = new Bundle();
         args.putBoolean(ARG_TYPE_OF_FOOD, isMeal);
+        args.putString(ARG_LOGIN_ID, loginId.toString());
 
         RecipeListFragment fragment = new RecipeListFragment();
         fragment.setArguments(args);
@@ -52,10 +51,11 @@ public class RecipeListFragment extends Fragment {
         return fragment;
     }
 
-    public static Fragment newInstance(boolean isMeal, boolean isDessert) {
+    public static Fragment newInstance(boolean isMeal, boolean isDessert, UUID loginId) {
         Bundle args = new Bundle();
         args.putBoolean(ARG_MEAL, isMeal);
         args.putBoolean(ARG_DESSERT, isDessert);
+        args.putString(ARG_LOGIN_ID, loginId.toString());
 
         RecipeListFragment fragment = new RecipeListFragment();
         fragment.setArguments(args);
@@ -87,6 +87,11 @@ public class RecipeListFragment extends Fragment {
         if(sDessert != null) {
             boolean typeDessert = (boolean) getArguments().getSerializable(ARG_DESSERT);
             dessert = typeDessert ? "DESSERT" : null;
+        }
+
+        Serializable sLoginId = getArguments().getSerializable(ARG_LOGIN_ID);
+        if(sLoginId != null){
+            loginId = UUID.fromString((String) getArguments().getSerializable(ARG_LOGIN_ID));
         }
 
     }
@@ -132,7 +137,7 @@ public class RecipeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.search_recipe:
-                Intent intent = new Intent(getActivity(), SearchRecipeActivity.class);
+                Intent intent = SearchRecipeActivity.newIntent(getContext(), loginId);
                 startActivity(intent);
                 return true;
             default:
@@ -151,7 +156,7 @@ public class RecipeListFragment extends Fragment {
         }
 
         if(mAdapter == null) {
-            mAdapter = new RecipeAdapter(recipes);
+            mAdapter = new RecipeAdapter(recipes, loginId);
             mRecipeRecyclerView.setAdapter(mAdapter);
         }else{
             mAdapter.setRecipes(recipes);
@@ -160,6 +165,7 @@ public class RecipeListFragment extends Fragment {
     }
 
     private class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private UUID mLoginId;
         private Recipe mRecipe;
         private TextView mTitleTextView;
         private ImageView mRecipeImg;
@@ -186,7 +192,9 @@ public class RecipeListFragment extends Fragment {
             mStar1 = itemView.findViewById(R.id.star_1);
         }
 
-        public void bind(Recipe recipe){
+        public void bind(Recipe recipe, UUID loginId){
+            mLoginId = loginId;
+
             mRecipe = recipe;
             mTitleTextView.setText(mRecipe.getName());
             mDuration.setText(String.valueOf(mRecipe.getDuration()));
@@ -200,16 +208,18 @@ public class RecipeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = RecipeDetail.newIntent(getContext(), mRecipe.getId());
+            Intent intent = RecipeDetail.newIntent(getContext(), mRecipe.getId(), mLoginId);
             startActivity(intent);
         }
     }
 
     private class RecipeAdapter extends RecyclerView.Adapter<RecipeHolder> {
         private List<Recipe> mRecipes;
+        private UUID mLoginId;
 
-        public RecipeAdapter(List<Recipe> recipes){
+        public RecipeAdapter(List<Recipe> recipes, UUID loginId){
             mRecipes = recipes;
+            mLoginId = loginId;
         }
 
         public void setRecipes(List<Recipe> recipes){
@@ -227,7 +237,7 @@ public class RecipeListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull RecipeHolder holder, int position) {
             Recipe recipe = mRecipes.get(position);
-            holder.bind(recipe);
+            holder.bind(recipe, mLoginId);
         }
 
         @Override

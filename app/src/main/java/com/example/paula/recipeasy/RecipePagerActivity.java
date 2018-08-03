@@ -1,5 +1,6 @@
 package com.example.paula.recipeasy;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,28 +16,40 @@ import android.view.Menu;
 import android.view.View;
 
 import com.example.paula.recipeasy.database.RecipeLab;
+import com.example.paula.recipeasy.database.RecipeUserLab;
 import com.example.paula.recipeasy.models.Recipe;
 
 import java.util.List;
+import java.util.UUID;
 
 public class RecipePagerActivity extends AppCompatActivity {
+
+    private static final String EXTRA_LOGIN_ID = "login_id";
 
     private ViewPager mViewPager;
     private List<Recipe> mRecipes;
     private FragmentPagerAdapter adapterViewPager;
     private FloatingActionButton mNewRecipe;
+    private UUID loginId;
+
+    public static Intent newIntent(Context packageContext, UUID id){
+        Intent intent = new Intent(packageContext, RecipePagerActivity.class);
+        intent.putExtra(EXTRA_LOGIN_ID, id);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_pager);
 
-        Log.i("RecipeListFragment", "PagerView:onCreate!");
+        loginId = (UUID) getIntent().getSerializableExtra(EXTRA_LOGIN_ID);
 
-        mRecipes = RecipeLab.get(this).getRecipes();
+        mRecipes = RecipeUserLab.get(this).getRecipes(loginId);
+        //mRecipes = RecipeLab.get(this).getRecipes();
 
         mViewPager = findViewById(R.id.recipe_view_pager);
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), mRecipes);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), mRecipes, loginId);
         mViewPager.setAdapter(adapterViewPager);
 
         mNewRecipe = findViewById(R.id.addNewRecipe);
@@ -65,10 +78,12 @@ public class RecipePagerActivity extends AppCompatActivity {
     public static class MyPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 2;
         List<Recipe> mRecipes;
+        UUID mLoginId;
 
-        public MyPagerAdapter(FragmentManager fragmentManager, List<Recipe> recipes) {
+        public MyPagerAdapter(FragmentManager fragmentManager, List<Recipe> recipes, UUID loginId) {
             super(fragmentManager);
             mRecipes = recipes;
+            mLoginId = loginId;
         }
 
         // Returns total number of pages.
@@ -83,9 +98,9 @@ public class RecipePagerActivity extends AppCompatActivity {
             Log.i("RecipeListFragment", "PagerView:getItem!");
             switch (position) {
                 case 0:
-                    return RecipeListFragment.newInstance(true);
+                    return RecipeListFragment.newInstance(true, mLoginId);
                 case 1:
-                    return RecipeListFragment.newInstance(false);
+                    return RecipeListFragment.newInstance(false, mLoginId);
                 default:
                     return null;
             }

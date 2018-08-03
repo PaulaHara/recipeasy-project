@@ -29,7 +29,7 @@
         app:showAsAction="ifRoom|withText"></item>
 
     <item
-        android:id="@+id/remove_recipe"
+        android:id="@+id/delete_recipe"
         android:title="@string/delete_recipe"
         android:icon="@drawable/ic_remove"
         app:showAsAction="ifRoom|withText"></item>

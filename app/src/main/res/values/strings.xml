@@ -8,7 +8,7 @@
     <string name="password">Password</string>
     <string name="password_confirm">Confirm Password</string>
     <string name="new_register">New Account</string>
-    <string name="search_recipe">Search Recipe</string>
+    <string name="search_recipe">Search</string>
     <string name="back">Back</string>
     <string name="ingredient_name">Ingredient Name</string>
     <string name="clear_button">Clear</string>
@@ -23,8 +23,8 @@
     <string name="portions_prt">prt</string>
     <string name="recipe_name">Recipe Name</string>
     <string name="add_new_recipe">Add Recipe</string>
-    <string name="delete_recipe">Delete Recipe</string>
+    <string name="delete_recipe">Delete</string>
     <string name="home">Home</string>
     <string name="share_button">Share</string>
-    <string name="save_recipe">Save Recipe</string>
+    <string name="save_recipe">Save</string>
 </resources>
