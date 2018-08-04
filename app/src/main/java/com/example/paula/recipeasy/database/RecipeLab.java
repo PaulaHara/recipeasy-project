@@ -192,6 +192,31 @@ public class RecipeLab extends DatabaseActions {
         return recipes;
     }
 
+    public List<Recipe> getRecipesByType(String meal, String dessert){
+        List<Recipe> recipes = new ArrayList<>();
+        RecipeCursorWrapper cursor;
+
+        if(meal != null && dessert == null) {
+            cursor = queryRecipe(RecipeTable.Cols.TYPE + " = ?", new String[] {meal});
+        }else if(meal == null && dessert != null) {
+            cursor = queryRecipe(RecipeTable.Cols.TYPE + " = ?", new String[] {dessert});
+        }else{
+            return getRecipes();
+        }
+
+        try{
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                recipes.add(getRecipe(cursor));
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return recipes;
+    }
+
     public List<RecipeIngredient> getIngredientsQttMeasure(UUID recipeId){
         List<RecipeIngredient> recipeIngr = new ArrayList<>();
         Cursor cursor;

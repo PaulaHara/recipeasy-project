@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.paula.recipeasy.database.FridgeLab;
 import com.example.paula.recipeasy.database.RecipeLab;
 import com.example.paula.recipeasy.database.RecipeUserLab;
 import com.example.paula.recipeasy.models.Recipe;
@@ -152,7 +153,12 @@ public class RecipeListFragment extends Fragment {
         if(typeOfRecipe != null) {
             recipes = RecipeUserLab.get(getActivity()).getUserRecipes(typeOfRecipe, loginId);
         }else{
-            recipes = RecipeLab.get(getActivity()).getRecipeByIngredients(meal, dessert);
+            if(FridgeLab.get(getActivity()).getFridgeIngredientsQtt() == 0){
+                // Search by type
+                recipes = RecipeLab.get(getActivity()).getRecipesByType(meal, dessert);
+            }else {
+                recipes = RecipeLab.get(getActivity()).getRecipeByIngredients(meal, dessert);
+            }
         }
 
         if(mAdapter == null) {

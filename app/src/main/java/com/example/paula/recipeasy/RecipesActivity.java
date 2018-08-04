@@ -60,7 +60,7 @@ public class RecipesActivity extends AppCompatActivity {
         PagerTabStrip pagerTabStrip = findViewById(R.id.recipes_page_header);
         pagerTabStrip.setDrawFullUnderline(true);
         pagerTabStrip.setTabIndicatorColor(Color.RED);
-        pagerTabStrip.setTextColor(Color.LTGRAY);
+        pagerTabStrip.setTextColor(Color.DKGRAY);
     }
 
     @Override

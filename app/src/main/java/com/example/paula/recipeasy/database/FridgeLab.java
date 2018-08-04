@@ -2,9 +2,12 @@ package com.example.paula.recipeasy.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
+import com.example.paula.recipeasy.database.CursorWrapper.RecipeCursorWrapper;
 import com.example.paula.recipeasy.database.RecipeasyDbSchema.FridgeIngredientTable;
 import com.example.paula.recipeasy.database.RecipeasyDbSchema.RecipeTable;
+import com.example.paula.recipeasy.models.Recipe;
 
 import java.util.UUID;
 
@@ -32,6 +35,20 @@ public class FridgeLab extends DatabaseActions {
         return values;
     }
 
+    private RecipeCursorWrapper query(String whereClause, String[] whereArgs){
+        Cursor cursor = getDatabase().query(
+                FridgeIngredientTable.NAME,
+                null,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null
+        );
+
+        return new RecipeCursorWrapper(cursor);
+    }
+
     public void addFridge(UUID ingredient, UUID measure, int qtt){
         ContentValues values = getRecipeValues(ingredient, measure, qtt);
         getDatabase().insert(FridgeIngredientTable.NAME, null, values);
@@ -39,5 +56,15 @@ public class FridgeLab extends DatabaseActions {
 
     public void deleteFridge(){
         getDatabase().delete(FridgeIngredientTable.NAME, null, null);
+    }
+
+    public int getFridgeIngredientsQtt(){
+        RecipeCursorWrapper cursor = query(null, null);
+
+        try{
+            return cursor.getCount();
+        } finally {
+            cursor.close();
+        }
     }
 }
